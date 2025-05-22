@@ -20,8 +20,6 @@ namespace MagneticCage173
         public Dictionary<Player, CageInfo> ActiveCages { get; } = new Dictionary<Player, CageInfo>();
         public Dictionary<Player, CoroutineHandle> ActiveCountdowns { get; } = new Dictionary<Player, CoroutineHandle>();
 
-        public override PluginPriority Priority => PluginPriority.Medium;
-
         public class CageInfo
         {
             public Player CagingPlayer { get; }
@@ -52,8 +50,7 @@ namespace MagneticCage173
             Exiled.Events.Handlers.Player.Died += handlers.OnPlayerDied;
             Exiled.Events.Handlers.Player.Hurting += handlers.OnPlayerHurting;
             Exiled.Events.Handlers.Player.ChangingRole += handlers.OnChangingRole;
-
-            Exiled.Events.Handlers.Player.Shooting += handlers.OnPlayerShooting; // Nowy handler
+            Exiled.Events.Handlers.Player.Shooting += handlers.OnPlayerShooting; 
 
             if (!IsMERLoaded())
             {
@@ -71,7 +68,6 @@ namespace MagneticCage173
             Exiled.Events.Handlers.Player.Died -= handlers.OnPlayerDied;
             Exiled.Events.Handlers.Player.Hurting -= handlers.OnPlayerHurting;
             Exiled.Events.Handlers.Player.ChangingRole -= handlers.OnChangingRole;
-
             Exiled.Events.Handlers.Player.Shooting -= handlers.OnPlayerShooting; 
 
             handlers.CleanupAllCages();

@@ -47,7 +47,7 @@ namespace MagneticCage173.Commands
                 return false;
             }
 
-            if (Physics.Raycast(player.CameraTransform.position, player.CameraTransform.forward, out RaycastHit hit, MagneticCage173.Instance.Config.MaxTargetDistance))
+            if (Physics.Raycast(player.CameraTransform.position, player.CameraTransform.forward, out RaycastHit hit, 2f))
             {
                 Player target = Player.Get(hit.collider.GetComponentInParent<ReferenceHub>()); 
 

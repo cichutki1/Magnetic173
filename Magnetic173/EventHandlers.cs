@@ -223,7 +223,7 @@ namespace MagneticCage173
                 yield break;
             }
 
-            Vector3 spawnPosition = cagingPlayer.Position + cagingPlayer.Transform.forward * plugin.Config.CageFollowOffset;
+            Vector3 spawnPosition = cagingPlayer.Position + cagingPlayer.Transform.forward * 4f;
             Quaternion spawnRotation = cagingPlayer.Transform.rotation;
 
             SchematicObject cageInstance = null;
@@ -255,7 +255,7 @@ namespace MagneticCage173
 
             MagneticCage173.CageInfo newCageInfo = new MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine);
             newCageInfo.CageSchematic = cageInstance;
-            newCageInfo.CurrentHealth = plugin.Config.MaxCageHealth;
+            newCageInfo.CurrentHealth = 200f;
 
             plugin.ActiveCages.Add(targetScp173, newCageInfo); 
         }
@@ -280,7 +280,7 @@ namespace MagneticCage173
                 }
                 try
                 {
-                    Vector3 targetCagePosition = cagingPlayer.Position + cagingPlayer.Transform.forward * plugin.Config.CageFollowOffset;
+                    Vector3 targetCagePosition = cagingPlayer.Position + cagingPlayer.Transform.forward * 4f;
                     Quaternion targetCageRotation = cagingPlayer.Transform.rotation;
                     cageSchematic.transform.position = targetCagePosition;
                     cageSchematic.transform.rotation = targetCageRotation;

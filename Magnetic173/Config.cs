@@ -29,14 +29,6 @@ namespace MagneticCage173
 
         [Description("Nazwa schematu klatki z Map Editor Reborn (MER). Musi być dokładna!")]
         public string SchematicName { get; set; } = "173Cage";
-
-        [Description("Maksymalna odległość, z jakiej można 'namierzyć' SCP-173.")]
-        public float MaxTargetDistance { get; set; } = 2f;
-
-        [Description("Jak daleko przed graczem ma podążać klatka.")]
-        public float CageFollowOffset { get; set; } = 4f; 
-
-        [Description("Ilość punktów wytrzymałości klatki. Po otrzymaniu tylu obrażeń klatka zostanie zniszczona.")]
-        public float MaxCageHealth { get; set; } = 160f; 
+        
     }
 }
