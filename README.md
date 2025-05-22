@@ -24,8 +24,8 @@
 
 1. Download the `Magnetic173.dll` file.
 2. Place it in your server’s `Plugins` folder.
-3. Download the magnetic cage schematic.
-4. Upload the schematic to your schematics folder (e.g., `LabAPI/configs/[PORT]/ProjectMER/Schematics`).
+3. Download the `173Cage.json` file.
+4. Upload the ``173Cage.json`` to your schematics folder (e.g., `LabAPI/configs/[PORT]/ProjectMER/Schematics`).
 5. Restart your server.
 
 ---
