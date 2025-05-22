@@ -22,7 +22,7 @@ namespace MagneticCage173
         };
 
         [Description("Nazwa komendy do aktywacji klatki.")]
-        public string CageCommand { get; set; } = "klatka173";
+        public string CageCommand { get; set; } = "klatka173s";
 
         [Description("Czas odliczania (w sekundach) przed aktywacją klatki.")]
         public float CountdownDuration { get; set; } = 5f;
