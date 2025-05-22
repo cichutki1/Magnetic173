@@ -68,7 +68,7 @@ namespace MagneticCage173
             Exiled.Events.Handlers.Player.Died -= handlers.OnPlayerDied;
             Exiled.Events.Handlers.Player.Hurting -= handlers.OnPlayerHurting;
             Exiled.Events.Handlers.Player.ChangingRole -= handlers.OnChangingRole;
-            Exiled.Events.Handlers.Player.Shooting -= handlers.OnPlayerShooting; 
+            Exiled.Events.Handlers.Player.Shooting -= handlers.OnPlayerShooting;
 
             handlers.CleanupAllCages();
 
