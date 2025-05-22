@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exiled.Events.EventArgs.Map;
 using ProjectMER.Features;
 using ProjectMER.Features.Objects;
 
@@ -35,7 +36,13 @@ namespace MagneticCage173
                 CleanupCage(ev.Player); 
             }
         }
-
+        
+        
+        
+        //Smierc
+        
+        
+        
         public void OnPlayerDied(DiedEventArgs ev)
         {
             if (plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine))
@@ -55,7 +62,13 @@ namespace MagneticCage173
                 CleanupCage(ev.Player);
             }
         }
-
+        
+        
+        
+        //Zmiana roli
+        
+        
+        
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine) && !plugin.Config.AllowedRoles.Contains(ev.NewRole))
@@ -74,7 +87,13 @@ namespace MagneticCage173
                 CleanupCage(ev.Player);
             }
         }
-
+        
+        
+        
+        //BLOKADA ATAKU
+        
+        
+        
         public void OnPlayerHurting(HurtingEventArgs ev)
         {
             if (ev.Attacker != null
@@ -85,7 +104,13 @@ namespace MagneticCage173
                 ev.Attacker.ShowHint("<color=red><b>Nie możesz atakować będąc w klatce magnetycznej!</color></b>", 2);
             }
         }
-
+        
+        
+        
+        //STRZELANIE
+        
+        
+        
         public void OnPlayerShooting(ShootingEventArgs ev)
         {
             if (ev.Player == null || !(ev.Item is Exiled.API.Features.Items.Firearm exiledFirearm))
@@ -138,6 +163,46 @@ namespace MagneticCage173
                 }
             }
         }
+        
+        
+        
+        //Wybuch Granatu
+        
+        
+        
+        public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
+        {
+
+            if (ev.Projectile.Type != ItemType.GrenadeHE)
+            {
+                return;
+            }
+
+
+            float destructionRadius = 3f; 
+
+       
+            foreach (var cageInfo in plugin.ActiveCages.Values.ToList())
+            {
+                if (cageInfo.CageSchematic != null && cageInfo.CageSchematic.gameObject != null)
+                {
+                    float distanceToCage = Vector3.Distance(ev.Position, cageInfo.CageSchematic.transform.position);
+
+                    if (distanceToCage <= destructionRadius)
+                    {
+                        cageInfo.CagedScp173?.ShowHint("<color=grey><b>Twoja klatka została zniszczona przez granat!</color></b>", 5);
+                        cageInfo.CagingPlayer?.ShowHint("<color=grey><b>Twoja klatka została zniszczona przez granat!</color></b>", 5);
+                        
+                        CleanupCage(cageInfo.CagedScp173);
+                    }
+                }
+            }
+        }
+        
+        //TAKIE COŚ BEZ TAKIEGO CZEGOŚ Z TAKIM CZYMŚ, NIE INTERESUJ SIĘ.
+        
+        
+        
         private float GetFirearmDamage(ItemType firearmType)
         {
             switch (firearmType)
@@ -158,6 +223,13 @@ namespace MagneticCage173
                     return 0f;
             }
         }
+        
+        
+        
+        //START
+        
+        
+        
         public void StartCagingProcess(Player cagingPlayer, Player targetScp173)
         {
             if (plugin.ActiveCages.ContainsKey(targetScp173))
@@ -183,6 +255,8 @@ namespace MagneticCage173
             plugin.ActiveCountdowns.Add(cagingPlayer, countdownCoroutine);
         }
 
+        
+        
         private IEnumerator<float> CountdownCoroutine(Player cagingPlayer, Player targetScp173, Vector3 startPosition)
         {
             float remainingTime = plugin.Config.CountdownDuration;
@@ -261,6 +335,7 @@ namespace MagneticCage173
         }
 
 
+        
         private IEnumerator<float> UpdateCageCoroutine(Player cagingPlayer, Player cagedScp173, SchematicObject cageSchematic)
         {
             if (cageSchematic == null)
@@ -295,6 +370,8 @@ namespace MagneticCage173
             }
         }
 
+        
+        
         public void CleanupCage(Player cagedScp173)
         {
             if (cagedScp173 == null) return;
