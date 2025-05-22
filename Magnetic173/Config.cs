@@ -27,7 +27,7 @@ namespace MagneticCage173
         [Description("Countdown time (in seconds) before the frame is activated.")]
         public float CountdownDuration { get; set; } = 5f;
 
-        [Description("Name of the cage schema from Map Editor Reborn (MER). Must be exact!")]
+        [Description("Name of the cage schema from Map Editor Reborn (MER). Must be exact!s")]
         public string SchematicName { get; set; } = "173Cage";
         
     }
