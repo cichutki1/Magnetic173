@@ -14,7 +14,7 @@ namespace Magnetic173
 {
     public class EventHandlers
     {
-        private readonly MagneticCage173.MagneticCage173 _plugin = MagneticCage173.MagneticCage173.Instance;
+        private readonly MagneticCage173 _plugin = MagneticCage173.Instance;
 
         public void OnRoundStarted() => CleanupAllCages();
         public void OnWaitingForPlayers() => CleanupAllCages();
@@ -321,7 +321,7 @@ namespace Magnetic173
 
             CoroutineHandle updateCoroutine = Timing.RunCoroutine(UpdateCageCoroutine(cagingPlayer, targetScp173, cageInstance));
 
-            MagneticCage173.MagneticCage173.CageInfo newCageInfo = new MagneticCage173.MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine);
+            MagneticCage173.CageInfo newCageInfo = new MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine);
             newCageInfo.CageSchematic = cageInstance;
             newCageInfo.CurrentHealth = 200f;
 
@@ -369,7 +369,7 @@ namespace Magnetic173
         public void CleanupCage(Player cagedScp173)
         {
             if (cagedScp173 == null) return;
-            if (_plugin.ActiveCages.TryGetValue(cagedScp173, out MagneticCage173.MagneticCage173.CageInfo cageInfo))
+            if (_plugin.ActiveCages.TryGetValue(cagedScp173, out MagneticCage173.CageInfo cageInfo))
             {
                 Timing.KillCoroutines(cageInfo.UpdateCoroutine);
                 if (cageInfo.CageSchematic?.transform != null)
@@ -399,7 +399,7 @@ namespace Magnetic173
         }
 
         internal bool IsAnyPlayerCaging(Player potentialCager) => _plugin.ActiveCages.Values.Any(ci => ci.CagingPlayer == potentialCager);
-        private bool TryGetCageByCagingPlayer(Player cagingPlayer, out MagneticCage173.MagneticCage173.CageInfo cageInfo)
+        private bool TryGetCageByCagingPlayer(Player cagingPlayer, out MagneticCage173.CageInfo cageInfo)
         {
             foreach (var kvp in _plugin.ActiveCages) { if (kvp.Value.CagingPlayer == cagingPlayer) { cageInfo = kvp.Value; return true; } }
             cageInfo = null; return false;

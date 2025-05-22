@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Exiled.API.Features;
 using MEC;
-using System.Collections.Generic;
-using Magnetic173;
-using ProjectMER.Features.Objects; 
-namespace MagneticCage173
+using ProjectMER.Features.Objects;
+
+namespace Magnetic173
 {
     public class MagneticCage173 : Plugin<Config>
     {

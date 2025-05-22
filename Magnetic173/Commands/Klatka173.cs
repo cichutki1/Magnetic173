@@ -10,7 +10,7 @@ namespace MagneticCage173.Commands
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Klatka173 : ICommand
     {
-        public string Command => MagneticCage173.Instance.Config.CageCommand;
+        public string Command => Magnetic173.MagneticCage173.Instance.Config.CageCommand;
         public string[] Aliases => null;
         public string Description => "Initiating the magnetic cage creation procedure on SCP-173.";
 
@@ -29,19 +29,19 @@ namespace MagneticCage173.Commands
                 return false;
             }
 
-            if (!MagneticCage173.Instance.Config.IsEnabled)
+            if (!Magnetic173.MagneticCage173.Instance.Config.IsEnabled)
             {
                 response = "The magnetic cage function is currently disabled.";
                 return false;
             }
 
-            if (!MagneticCage173.Instance.Config.AllowedRoles.Contains(player.Role.Type))
+            if (!Magnetic173.MagneticCage173.Instance.Config.AllowedRoles.Contains(player.Role.Type))
             {
                 response = "Your role does not permit the use of this command.";
                 return false;
             }
 
-            if (MagneticCage173.Instance.ActiveCountdowns.ContainsKey(player) || MagneticCage173.Instance.IsPlayerCurrentlyCaging(player)) 
+            if (Magnetic173.MagneticCage173.Instance.ActiveCountdowns.ContainsKey(player) || Magnetic173.MagneticCage173.Instance.IsPlayerCurrentlyCaging(player)) 
             {
                 response = "You are already in the process of creating a cage or have an active cage.";
                 return false;
@@ -53,13 +53,13 @@ namespace MagneticCage173.Commands
 
                 if (target != null && target.Role.Type == RoleTypeId.Scp173)
                 {
-                    if (MagneticCage173.Instance.ActiveCages.ContainsKey(target))
+                    if (Magnetic173.MagneticCage173.Instance.ActiveCages.ContainsKey(target))
                     {
                         response = "This SCP-173 is already in a cage.";
                         return false;
                     }
 
-                    MagneticCage173.Instance.InitiateCagingProcess(player, target); 
+                    Magnetic173.MagneticCage173.Instance.InitiateCagingProcess(player, target); 
                     response = "Initiating magnetic cage creation procedure...";
                     return true;
                 }

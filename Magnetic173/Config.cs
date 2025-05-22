@@ -1,9 +1,9 @@
-﻿using Exiled.API.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Interfaces;
 using PlayerRoles;
 
-namespace MagneticCage173
+namespace Magnetic173
 {
     public class Config : IConfig
     {
