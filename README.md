@@ -16,6 +16,7 @@
 ## ✅ Requirements
 
 * **EXILED** version **9.6.0** (or newer, compatible)
+* **ProjectMER** - https://github.com/Michal78900/ProjectMER
 
 ---
 
