@@ -7,13 +7,13 @@ namespace MagneticCage173
 {
     public class Config : IConfig
     {
-        [Description("Czy plugin jest włączony?")]
+        [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("Czy włączyć logowanie debugowe?")]
+        [Description("Debug Mode")]
         public bool Debug { get; set; } = false;
 
-        [Description("Role, które mogą używać komendy .klatka173")]
+        [Description("Roles that are allowed to use the .cage173 command")]
         public List<RoleTypeId> AllowedRoles { get; set; } = new List<RoleTypeId>
         {
             RoleTypeId.NtfCaptain,
@@ -21,13 +21,13 @@ namespace MagneticCage173
             RoleTypeId.NtfSergeant
         };
 
-        [Description("Nazwa komendy do aktywacji klatki.")]
-        public string CageCommand { get; set; } = "klatka173";
+        [Description("Name of the command to activate the cage.")]
+        public string CageCommand { get; set; } = "cage173";
 
-        [Description("Czas odliczania (w sekundach) przed aktywacją klatki.")]
+        [Description("Countdown time (in seconds) before the frame is activated.")]
         public float CountdownDuration { get; set; } = 5f;
 
-        [Description("Nazwa schematu klatki z Map Editor Reborn (MER). Musi być dokładna!")]
+        [Description("Name of the cage schema from Map Editor Reborn (MER). Must be exact!")]
         public string SchematicName { get; set; } = "173Cage";
         
     }
