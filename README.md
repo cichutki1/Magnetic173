@@ -1,1 +1,35 @@
-test
+# 🔩 MagneticCage173
+
+**MagneticCage173** is a plugin for the game **SCP: Secret Laboratory**, built with the **EXILED** framework. It allows free movement of **SCP-173** inside a special magnetic cage, enabling you to safely secure it.
+
+---
+
+## 🎮 How It Works
+
+1. **Look** at SCP-173.
+2. **Use the command**: `.cage173`
+3. SCP-173 will be locked inside a cage that prevents it from attacking.
+4. You can then move freely while carrying the cage.
+
+---
+
+## ✅ Requirements
+
+* **EXILED** version **9.6.0** (or newer, compatible)
+
+---
+
+## 📦 Installation
+
+1. Download the `Magnetic173.dll` file.
+2. Place it in your server’s `Plugins` folder.
+3. Download the magnetic cage schematic.
+4. Upload the schematic to your schematics folder (e.g., `LabAPI/configs/[PORT]/ProjectMER/Schematics`).
+5. Restart your server.
+
+---
+
+## 👨‍💻 Authors
+
+* **Feniks Studio**
+* **Tymek** – lead developer
