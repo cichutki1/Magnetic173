@@ -1,6 +1,5 @@
 ﻿using System;
 using Exiled.API.Features;
-using Exiled.API.Enums;
 using MEC;
 using System.Collections.Generic;
 using ProjectMER.Features.Objects; 
@@ -10,7 +9,7 @@ namespace MagneticCage173
     {
         public override string Name => "MagneticCage173";
         public override string Author => "Feniks Studio - Tymek";
-        public override Version Version => new Version(2, 2, 1); 
+        public override Version Version => new Version(1, 0, 1); 
         public override Version RequiredExiledVersion => new Version(9, 6, 0);
 
         public static MagneticCage173 Instance { get; private set; }
