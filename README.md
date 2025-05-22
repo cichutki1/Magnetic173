@@ -1,6 +1,6 @@
 # 🔩 MagneticCage173
 
-**MagneticCage173** is a plugin for the game **SCP: Secret Laboratory**, built with the **EXILED** framework. It allows free movement of **SCP-173** inside a special magnetic cage, enabling you to safely secure it.
+**MagneticCage173** is a plugin for the game **SCP: Secret Laboratory**, built on the **EXILED** framework. It allows free movement with **SCP-173** inside a special magnetic cage, enabling its safe containment.
 
 ---
 
