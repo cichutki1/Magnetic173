@@ -1,37 +1,37 @@
-﻿using Exiled.Events.EventArgs.Player;
-using MEC;
-using PlayerRoles;
-using UnityEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Exiled.Events.EventArgs.Map;
+using Exiled.Events.EventArgs.Player;
+using MEC;
+using PlayerRoles;
 using ProjectMER.Features;
 using ProjectMER.Features.Objects;
+using UnityEngine;
 using Player = Exiled.API.Features.Player;
 
-namespace MagneticCage173
+namespace Magnetic173
 {
     public class EventHandlers
     {
-        private readonly MagneticCage173 plugin = MagneticCage173.Instance;
+        private readonly MagneticCage173.MagneticCage173 _plugin = MagneticCage173.MagneticCage173.Instance;
 
         public void OnRoundStarted() => CleanupAllCages();
         public void OnWaitingForPlayers() => CleanupAllCages();
 
         public void OnPlayerDestroying(DestroyingEventArgs ev)
         {
-            if (plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine))
+            if (_plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine))
             {
                 Timing.KillCoroutines(countdownCoroutine);
-                plugin.ActiveCountdowns.Remove(ev.Player);
+                _plugin.ActiveCountdowns.Remove(ev.Player);
             }
 
             if (TryGetCageByCagingPlayer(ev.Player, out var cageInfo))
             {
                 CleanupCage(cageInfo.CagedScp173);
             }
-            else if (plugin.ActiveCages.TryGetValue(ev.Player, out cageInfo)) 
+            else if (_plugin.ActiveCages.TryGetValue(ev.Player, out cageInfo)) 
             {
                 CleanupCage(ev.Player); 
             }
@@ -45,10 +45,10 @@ namespace MagneticCage173
         
         public void OnPlayerDied(DiedEventArgs ev)
         {
-            if (plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine))
+            if (_plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine))
             {
                 Timing.KillCoroutines(countdownCoroutine);
-                plugin.ActiveCountdowns.Remove(ev.Player);
+                _plugin.ActiveCountdowns.Remove(ev.Player);
                 ev.Player.ShowHint("<color=grey><b>Cage creation procedure canceled – you died.</color></b>", 5);
             }
 
@@ -57,7 +57,7 @@ namespace MagneticCage173
             {
                 CleanupCage(cageInfo.CagedScp173);
             }
-            else if (plugin.ActiveCages.TryGetValue(ev.Player, out cageInfo)) 
+            else if (_plugin.ActiveCages.TryGetValue(ev.Player, out cageInfo)) 
             {
                 CleanupCage(ev.Player);
             }
@@ -71,18 +71,18 @@ namespace MagneticCage173
         
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine) && !plugin.Config.AllowedRoles.Contains(ev.NewRole))
+            if (_plugin.ActiveCountdowns.TryGetValue(ev.Player, out var countdownCoroutine) && !_plugin.Config.AllowedRoles.Contains(ev.NewRole))
             {
                 Timing.KillCoroutines(countdownCoroutine);
-                plugin.ActiveCountdowns.Remove(ev.Player);
+                _plugin.ActiveCountdowns.Remove(ev.Player);
                 ev.Player.ShowHint("<color=grey><b>Cage creation procedure canceled - change role.</color></b>", 5);
             }
 
-            if (TryGetCageByCagingPlayer(ev.Player, out var cageInfo) && !plugin.Config.AllowedRoles.Contains(ev.NewRole))
+            if (TryGetCageByCagingPlayer(ev.Player, out var cageInfo) && !_plugin.Config.AllowedRoles.Contains(ev.NewRole))
             {
                 CleanupCage(cageInfo.CagedScp173);
             }
-            else if (plugin.ActiveCages.TryGetValue(ev.Player, out cageInfo))
+            else if (_plugin.ActiveCages.TryGetValue(ev.Player, out cageInfo))
             {
                 CleanupCage(ev.Player);
             }
@@ -98,7 +98,7 @@ namespace MagneticCage173
         {
             if (ev.Attacker != null
                 && ev.Attacker.Role.Type == RoleTypeId.Scp173
-                && plugin.ActiveCages.ContainsKey(ev.Attacker))
+                && _plugin.ActiveCages.ContainsKey(ev.Attacker))
             {
                 ev.IsAllowed = false;
                 ev.Attacker.ShowHint("<color=red><b>You can’t attack while in a magnetic cage!</color></b>", 2);
@@ -127,7 +127,7 @@ namespace MagneticCage173
 
             if (Physics.Raycast(ev.Player.CameraTransform.position, ev.Player.CameraTransform.forward, out RaycastHit hit, rayDistance))
             {
-                foreach (var cageInfo in plugin.ActiveCages.Values.ToList())
+                foreach (var cageInfo in _plugin.ActiveCages.Values.ToList())
                 {
                     if (cageInfo.CageSchematic != null && cageInfo.CageSchematic.gameObject != null)
                     {
@@ -182,7 +182,7 @@ namespace MagneticCage173
             float destructionRadius = 3f; 
 
        
-            foreach (var cageInfo in plugin.ActiveCages.Values.ToList())
+            foreach (var cageInfo in _plugin.ActiveCages.Values.ToList())
             {
                 if (cageInfo.CageSchematic != null && cageInfo.CageSchematic.gameObject != null)
                 {
@@ -232,7 +232,7 @@ namespace MagneticCage173
         
         public void StartCagingProcess(Player cagingPlayer, Player targetScp173)
         {
-            if (plugin.ActiveCages.ContainsKey(targetScp173))
+            if (_plugin.ActiveCages.ContainsKey(targetScp173))
             {
                 cagingPlayer.ShowHint("<color=grey><b>This SCP-173 is already in the cage.</color></b>", 5);
                 return;
@@ -242,7 +242,7 @@ namespace MagneticCage173
                 cagingPlayer.ShowHint("<color=grey><b>You are already creating or have an active cage.</color></b>", 5);
                 return;
             }
-            if (plugin.ActiveCountdowns.ContainsKey(cagingPlayer))
+            if (_plugin.ActiveCountdowns.ContainsKey(cagingPlayer))
             {
                 cagingPlayer.ShowHint("<color=grey><b>You have already initiated the cage creation procedure.</color></b>", 5);
                 return;
@@ -252,27 +252,27 @@ namespace MagneticCage173
             Vector3 startPosition = cagingPlayer.Position;
 
             CoroutineHandle countdownCoroutine = Timing.RunCoroutine(CountdownCoroutine(cagingPlayer, targetScp173, startPosition));
-            plugin.ActiveCountdowns.Add(cagingPlayer, countdownCoroutine);
+            _plugin.ActiveCountdowns.Add(cagingPlayer, countdownCoroutine);
         }
 
         
         
         private IEnumerator<float> CountdownCoroutine(Player cagingPlayer, Player targetScp173, Vector3 startPosition)
         {
-            float remainingTime = plugin.Config.CountdownDuration;
+            float remainingTime = _plugin.Config.CountdownDuration;
             while (remainingTime > 0)
             {
-                if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
+                if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
                 {
                     cagingPlayer?.ShowHint("<color=grey><b>Procedura tworzenia klatki anulowana.</color></b>", 5);
-                    if (cagingPlayer != null) plugin.ActiveCountdowns.Remove(cagingPlayer);
+                    if (cagingPlayer != null) _plugin.ActiveCountdowns.Remove(cagingPlayer);
                     yield break; 
                 }
 
                 if (Vector3.Distance(cagingPlayer.Position, startPosition) > 1.0f)
                 {
                     cagingPlayer.ShowHint($"<color=grey><b>Cage creating procedure canceled</color></b>\n<color=white><b>You have moved too far away...</color></b>", 5);
-                    plugin.ActiveCountdowns.Remove(cagingPlayer);
+                    _plugin.ActiveCountdowns.Remove(cagingPlayer);
                     yield break;
                 }
 
@@ -282,20 +282,14 @@ namespace MagneticCage173
                 remainingTime -= 1f;
             }
 
-            if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
+            if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
             {
                 cagingPlayer?.ShowHint("<color=grey><b>Failed to create the cage.</color></b>", 5);
-                if (cagingPlayer != null) plugin.ActiveCountdowns.Remove(cagingPlayer);
+                if (cagingPlayer != null) _plugin.ActiveCountdowns.Remove(cagingPlayer);
                 yield break;
             }
 
-            plugin.ActiveCountdowns.Remove(cagingPlayer);
-
-            if (MapUtils.GetSchematicDataByName(MagneticCage173.Instance.Config.SchematicName) == null)
-            {
-                cagingPlayer.ShowHint($"<color=red><b>Błąd:</color></b> <b><color=grey>Nie znaleziono schematu klatki '{plugin.Config.SchematicName}'.</color></b>", 10);
-                yield break;
-            }
+            _plugin.ActiveCountdowns.Remove(cagingPlayer);
 
             Vector3 spawnPosition = cagingPlayer.Position + cagingPlayer.Transform.forward * 3f;
             Quaternion spawnRotation = cagingPlayer.Transform.rotation;
@@ -305,7 +299,7 @@ namespace MagneticCage173
             try
             {
                 cageInstance = ObjectSpawner.SpawnSchematic(
-                    plugin.Config.SchematicName,
+                    _plugin.Config.SchematicName,
                     spawnPosition,
                     spawnRotation.eulerAngles
                 );
@@ -327,11 +321,11 @@ namespace MagneticCage173
 
             CoroutineHandle updateCoroutine = Timing.RunCoroutine(UpdateCageCoroutine(cagingPlayer, targetScp173, cageInstance));
 
-            MagneticCage173.CageInfo newCageInfo = new MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine);
+            MagneticCage173.MagneticCage173.CageInfo newCageInfo = new MagneticCage173.MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine);
             newCageInfo.CageSchematic = cageInstance;
             newCageInfo.CurrentHealth = 200f;
 
-            plugin.ActiveCages.Add(targetScp173, newCageInfo); 
+            _plugin.ActiveCages.Add(targetScp173, newCageInfo); 
         }
 
 
@@ -349,7 +343,7 @@ namespace MagneticCage173
                     CleanupCage(cagedScp173); yield break; 
                 }
                 if (cagingPlayer == null || !cagingPlayer.IsConnected || cagedScp173 == null || !cagedScp173.IsConnected ||
-                    cagedScp173.Role.Type != RoleTypeId.Scp173 || !plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
+                    cagedScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
                 { 
                     CleanupCage(cagedScp173); yield break; 
                 }
@@ -375,7 +369,7 @@ namespace MagneticCage173
         public void CleanupCage(Player cagedScp173)
         {
             if (cagedScp173 == null) return;
-            if (plugin.ActiveCages.TryGetValue(cagedScp173, out MagneticCage173.CageInfo cageInfo))
+            if (_plugin.ActiveCages.TryGetValue(cagedScp173, out MagneticCage173.MagneticCage173.CageInfo cageInfo))
             {
                 Timing.KillCoroutines(cageInfo.UpdateCoroutine);
                 if (cageInfo.CageSchematic?.transform != null)
@@ -386,32 +380,28 @@ namespace MagneticCage173
                     }
                     catch (Exception)
                     {
-                        
+                        // Noi co? Znaleźliście coś ciekawego?
                     }
                 }
-                else 
-                { 
-
-                }
-                plugin.ActiveCages.Remove(cagedScp173);
+                _plugin.ActiveCages.Remove(cagedScp173);
                 cagedScp173?.ShowHint("<color=grey><b>You have been released from the cage.</color></b>", 3);
             }
         }
 
         public void CleanupAllCages()
         {
-            List<Player> countingPlayers = plugin.ActiveCountdowns.Keys.ToList();
-            foreach (var p in countingPlayers) { if (plugin.ActiveCountdowns.TryGetValue(p, out var c)) Timing.KillCoroutines(c); }
-            plugin.ActiveCountdowns.Clear();
-            List<Player> cagedScps = plugin.ActiveCages.Keys.ToList();
+            List<Player> countingPlayers = _plugin.ActiveCountdowns.Keys.ToList();
+            foreach (var p in countingPlayers) { if (_plugin.ActiveCountdowns.TryGetValue(p, out var c)) Timing.KillCoroutines(c); }
+            _plugin.ActiveCountdowns.Clear();
+            List<Player> cagedScps = _plugin.ActiveCages.Keys.ToList();
             foreach (var scp in cagedScps) { CleanupCage(scp); }
-            plugin.ActiveCages.Clear();
+            _plugin.ActiveCages.Clear();
         }
 
-        internal bool IsAnyPlayerCaging(Player potentialCager) => plugin.ActiveCages.Values.Any(ci => ci.CagingPlayer == potentialCager);
-        private bool TryGetCageByCagingPlayer(Player cagingPlayer, out MagneticCage173.CageInfo cageInfo)
+        internal bool IsAnyPlayerCaging(Player potentialCager) => _plugin.ActiveCages.Values.Any(ci => ci.CagingPlayer == potentialCager);
+        private bool TryGetCageByCagingPlayer(Player cagingPlayer, out MagneticCage173.MagneticCage173.CageInfo cageInfo)
         {
-            foreach (var kvp in plugin.ActiveCages) { if (kvp.Value.CagingPlayer == cagingPlayer) { cageInfo = kvp.Value; return true; } }
+            foreach (var kvp in _plugin.ActiveCages) { if (kvp.Value.CagingPlayer == cagingPlayer) { cageInfo = kvp.Value; return true; } }
             cageInfo = null; return false;
         }
 

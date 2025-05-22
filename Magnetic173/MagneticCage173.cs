@@ -2,6 +2,7 @@
 using Exiled.API.Features;
 using MEC;
 using System.Collections.Generic;
+using Magnetic173;
 using ProjectMER.Features.Objects; 
 namespace MagneticCage173
 {
@@ -14,7 +15,7 @@ namespace MagneticCage173
 
         public static MagneticCage173 Instance { get; private set; }
 
-        internal EventHandlers handlers;
+        private EventHandlers _handlers;
 
         public Dictionary<Player, CageInfo> ActiveCages { get; } = new Dictionary<Player, CageInfo>();
         public Dictionary<Player, CoroutineHandle> ActiveCountdowns { get; } = new Dictionary<Player, CoroutineHandle>();
@@ -40,19 +41,19 @@ namespace MagneticCage173
         public override void OnEnabled()
         {
             Instance = this;
-            handlers = new EventHandlers();
+            _handlers = new EventHandlers();
 
-            Exiled.Events.Handlers.Server.RoundStarted += handlers.OnRoundStarted;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += handlers.OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.Verified += handlers.OnPlayerVerified;
-            Exiled.Events.Handlers.Player.Destroying += handlers.OnPlayerDestroying;
-            Exiled.Events.Handlers.Player.Died += handlers.OnPlayerDied;
-            Exiled.Events.Handlers.Player.Hurting += handlers.OnPlayerHurting;
-            Exiled.Events.Handlers.Player.ChangingRole += handlers.OnChangingRole;
-            Exiled.Events.Handlers.Player.Shooting += handlers.OnPlayerShooting;
-            Exiled.Events.Handlers.Map.ExplodingGrenade += handlers.OnExplodingGrenade;
+            Exiled.Events.Handlers.Server.RoundStarted += _handlers.OnRoundStarted;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += _handlers.OnWaitingForPlayers;
+            Exiled.Events.Handlers.Player.Verified += _handlers.OnPlayerVerified;
+            Exiled.Events.Handlers.Player.Destroying += _handlers.OnPlayerDestroying;
+            Exiled.Events.Handlers.Player.Died += _handlers.OnPlayerDied;
+            Exiled.Events.Handlers.Player.Hurting += _handlers.OnPlayerHurting;
+            Exiled.Events.Handlers.Player.ChangingRole += _handlers.OnChangingRole;
+            Exiled.Events.Handlers.Player.Shooting += _handlers.OnPlayerShooting;
+            Exiled.Events.Handlers.Map.ExplodingGrenade += _handlers.OnExplodingGrenade;
 
-            if (!IsMERLoaded())
+            if (!IsMerLoaded())
             {
             }
 
@@ -61,34 +62,34 @@ namespace MagneticCage173
 
         public override void OnDisabled()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= handlers.OnRoundStarted;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= handlers.OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.Verified -= handlers.OnPlayerVerified;
-            Exiled.Events.Handlers.Player.Destroying -= handlers.OnPlayerDestroying;
-            Exiled.Events.Handlers.Player.Died -= handlers.OnPlayerDied;
-            Exiled.Events.Handlers.Player.Hurting -= handlers.OnPlayerHurting;
-            Exiled.Events.Handlers.Player.ChangingRole -= handlers.OnChangingRole;
-            Exiled.Events.Handlers.Player.Shooting -= handlers.OnPlayerShooting;
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= handlers.OnExplodingGrenade;
+            Exiled.Events.Handlers.Server.RoundStarted -= _handlers.OnRoundStarted;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= _handlers.OnWaitingForPlayers;
+            Exiled.Events.Handlers.Player.Verified -= _handlers.OnPlayerVerified;
+            Exiled.Events.Handlers.Player.Destroying -= _handlers.OnPlayerDestroying;
+            Exiled.Events.Handlers.Player.Died -= _handlers.OnPlayerDied;
+            Exiled.Events.Handlers.Player.Hurting -= _handlers.OnPlayerHurting;
+            Exiled.Events.Handlers.Player.ChangingRole -= _handlers.OnChangingRole;
+            Exiled.Events.Handlers.Player.Shooting -= _handlers.OnPlayerShooting;
+            Exiled.Events.Handlers.Map.ExplodingGrenade -= _handlers.OnExplodingGrenade;
 
-            handlers.CleanupAllCages();
+            _handlers.CleanupAllCages();
 
-            handlers = null;
+            _handlers = null;
             Instance = null;
             base.OnDisabled();
         }
 
         public void InitiateCagingProcess(Player cagingPlayer, Player targetScp173)
         {
-            handlers?.StartCagingProcess(cagingPlayer, targetScp173);
+            _handlers?.StartCagingProcess(cagingPlayer, targetScp173);
         }
 
         public bool IsPlayerCurrentlyCaging(Player player)
         {
-            return handlers?.IsAnyPlayerCaging(player) ?? false;
+            return _handlers?.IsAnyPlayerCaging(player) ?? false;
         }
 
-        private bool IsMERLoaded()
+        private static bool IsMerLoaded()
         {
             try
             {
