@@ -259,33 +259,46 @@ namespace Magnetic173
         
         private IEnumerator<float> CountdownCoroutine(Player cagingPlayer, Player targetScp173, Vector3 startPosition)
         {
+            Quaternion startRotation = cagingPlayer.CameraTransform.rotation;
+            float maxAllowedRotationChange = 0.5f; 
+            float maxAllowedDistanceChange = 0.3f;
+
             float remainingTime = _plugin.Config.CountdownDuration;
             while (remainingTime > 0)
             {
-                if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
+                if (!cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
                 {
-                    cagingPlayer?.ShowHint("<color=grey><b>Procedura tworzenia klatki anulowana.</color></b>", 5);
-                    if (cagingPlayer != null) _plugin.ActiveCountdowns.Remove(cagingPlayer);
-                    yield break; 
-                }
-
-                if (Vector3.Distance(cagingPlayer.Position, startPosition) > 1.0f)
-                {
-                    cagingPlayer.ShowHint($"<color=grey><b>Cage creating procedure canceled</color></b>\n<color=white><b>You have moved too far away...</color></b>", 5);
+                    cagingPlayer?.ShowHint($"<color=grey><b>Cage creation procedure canceled.</color></b>", 5);
                     _plugin.ActiveCountdowns.Remove(cagingPlayer);
                     yield break;
                 }
 
+                float currentDistanceMoved = Vector3.Distance(cagingPlayer.Position, startPosition);
+                float currentRotationChanged = Quaternion.Angle(cagingPlayer.CameraTransform.rotation, startRotation);
 
-                cagingPlayer.ShowHint($"<b><color=grey>Deploying magnetic cage…</color></b>\n<color=white><b>Remaining:</b></color> <color=grey>{Mathf.CeilToInt(remainingTime)}</color>\n<color=grey><b>Don’t move away!</color></color>", 1.1f); // Dodano info o nieoddalaniu się
+                if (currentDistanceMoved > maxAllowedDistanceChange) 
+                {
+                    cagingPlayer.ShowHint($"<color=grey><b>Cage creation procedure canceled</color></b>\n<color=white><b>You moved too far away...</color></b>", 5);
+                    _plugin.ActiveCountdowns.Remove(cagingPlayer);
+                    yield break;
+                }
+
+                if (currentRotationChanged > maxAllowedRotationChange) 
+                {
+                    cagingPlayer.ShowHint($"<color=grey><b>Cage creation procedure canceled</color></b>\n<color=white><b>You looked away...</color></b>", 5);
+                    _plugin.ActiveCountdowns.Remove(cagingPlayer);
+                    yield break;
+                }
+
+                cagingPlayer.ShowHint($"<b><color=grey>Deploying magnetic cage…</color></b>\n<color=white><b>Remaining:</b></color> <color=grey>{Mathf.CeilToInt(remainingTime)}</color>\n<color=grey><b>Don’t move and don’t look around!</color></b>", 1.1f);
                 yield return Timing.WaitForSeconds(1f);
                 remainingTime -= 1f;
             }
 
-            if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
+            if (!cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
             {
-                cagingPlayer?.ShowHint("<color=grey><b>Failed to create the cage.</color></b>", 5);
-                if (cagingPlayer != null) _plugin.ActiveCountdowns.Remove(cagingPlayer);
+                cagingPlayer?.ShowHint($"<color=grey><b>Failed to create the cage.</color></b>", 5);
+                _plugin.ActiveCountdowns.Remove(cagingPlayer);
                 yield break;
             }
 
@@ -293,7 +306,6 @@ namespace Magnetic173
 
             Vector3 spawnPosition = cagingPlayer.Position + cagingPlayer.Transform.forward * 3f;
             Quaternion spawnRotation = cagingPlayer.Transform.rotation;
-
             SchematicObject cageInstance = null;
 
             try
@@ -301,31 +313,33 @@ namespace Magnetic173
                 cageInstance = ObjectSpawner.SpawnSchematic(
                     _plugin.Config.SchematicName,
                     spawnPosition,
-                    spawnRotation.eulerAngles
+                    spawnRotation.eulerAngles 
                 );
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage.</color></b>", 10);
+                cagingPlayer.ShowHint("<color=red><b>Błąd:</color></b> <color=grey><b>Nie udało się utworzyć klatki (błąd schematu).</color></b>", 10);
                 yield break;
             }
 
             if (cageInstance == null)
             {
-                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage.</color></b>", 10);
+                cagingPlayer.ShowHint("<color=red><b>Błąd:</color></b> <color=grey><b>Nie udało się utworzyć klatki (schemat nie załadowany).</color></b>", 10);
                 yield break;
             }
 
-            cagingPlayer.ShowHint("<color=white><b>Magnetic cage active!</color></b>", 5);
-            targetScp173.ShowHint("<color=grey><b>You have been caught in a magnetic cage!</color></b>", 5);
+            cagingPlayer.ShowHint("<color=white><b>Klatka magnetyczna aktywna!</color></b>", 5);
+            targetScp173.ShowHint("<color=grey><b>Zostałeś złapany w klatkę magnetyczną!</color></b>", 5);
 
             CoroutineHandle updateCoroutine = Timing.RunCoroutine(UpdateCageCoroutine(cagingPlayer, targetScp173, cageInstance));
 
-            MagneticCage173.CageInfo newCageInfo = new MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine);
-            newCageInfo.CageSchematic = cageInstance;
-            newCageInfo.CurrentHealth = 200f;
+            MagneticCage173.CageInfo newCageInfo = new MagneticCage173.CageInfo(cagingPlayer, targetScp173, updateCoroutine)
+            {
+                CageSchematic = cageInstance,
+                CurrentHealth = 200
+            };
 
-            _plugin.ActiveCages.Add(targetScp173, newCageInfo); 
+            _plugin.ActiveCages.Add(targetScp173, newCageInfo);
         }
 
 
