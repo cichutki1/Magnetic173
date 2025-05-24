@@ -318,18 +318,18 @@ namespace Magnetic173
             }
             catch (Exception ex)
             {
-                cagingPlayer.ShowHint("<color=red><b>Błąd:</color></b> <color=grey><b>Nie udało się utworzyć klatki (błąd schematu).</color></b>", 10);
+                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage (schematic error).</color></b>", 10);
                 yield break;
             }
 
             if (cageInstance == null)
             {
-                cagingPlayer.ShowHint("<color=red><b>Błąd:</color></b> <color=grey><b>Nie udało się utworzyć klatki (schemat nie załadowany).</color></b>", 10);
+                cagingPlayer.ShowHint($"<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage (schematic not loaded).</color></b>", 10);
                 yield break;
             }
 
-            cagingPlayer.ShowHint("<color=white><b>Klatka magnetyczna aktywna!</color></b>", 5);
-            targetScp173.ShowHint("<color=grey><b>Zostałeś złapany w klatkę magnetyczną!</color></b>", 5);
+            cagingPlayer.ShowHint($"<color=white><b>Magnetic cage active!</color></b>", 5);
+            targetScp173.ShowHint($"<color=grey><b>You have been caught in a magnetic cage!</color></b>", 5);
 
             CoroutineHandle updateCoroutine = Timing.RunCoroutine(UpdateCageCoroutine(cagingPlayer, targetScp173, cageInstance));
 
@@ -394,7 +394,7 @@ namespace Magnetic173
                     }
                     catch (Exception)
                     {
-                        // Noi co? Znaleźliście coś ciekawego?
+                        // Noi co, Znaleźliście coś ciekawego?
                     }
                 }
                 _plugin.ActiveCages.Remove(cagedScp173);
