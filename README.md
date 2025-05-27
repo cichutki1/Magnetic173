@@ -39,4 +39,4 @@
 ## 👨‍💻 Authors
 
 * **Feniks Studio**
-* **Tymek** – lead developer
+* **Tymek** – Lead Developer
