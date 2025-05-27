@@ -163,8 +163,8 @@ namespace Magnetic173
                 }
             }
         }
-        
-        
+
+
         
         //Wybuch Granatu
         
@@ -207,18 +207,18 @@ namespace Magnetic173
         {
             switch (firearmType)
             {
-                case ItemType.GunCOM15: return 15f;
-                case ItemType.GunCOM18: return 15f;
-                case ItemType.GunFSP9: return 25f;
-                case ItemType.GunCrossvec: return 25f;
-                case ItemType.GunE11SR: return 35f;
-                case ItemType.GunAK: return 45f;
-                case ItemType.GunLogicer: return 55f;
+                case ItemType.GunCOM15: return 10f;
+                case ItemType.GunCOM18: return 10f;
+                case ItemType.GunFSP9: return 15f;
+                case ItemType.GunCrossvec: return 15f;
+                case ItemType.GunE11SR: return 20f;
+                case ItemType.GunAK: return 20;
+                case ItemType.GunLogicer: return 25f;
                 case ItemType.GunRevolver: return 15f;
-                case ItemType.GunShotgun: return 12f * 8;
+                case ItemType.GunShotgun: return 4f * 8;
                 case ItemType.ParticleDisruptor: return 1000f; 
-                case ItemType.GunFRMG0: return 125f;
-                case ItemType.GunA7: return 32f; 
+                case ItemType.GunFRMG0: return 55f;
+                case ItemType.GunA7: return 25f; 
                 default:
                     return 0f;
             }

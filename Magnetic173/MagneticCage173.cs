@@ -10,7 +10,7 @@ namespace Magnetic173
     {
         public override string Name => "MagneticCage173";
         public override string Author => "Feniks Studio - Tymek";
-        public override Version Version => new Version(1, 0, 1); 
+        public override Version Version => new Version(1, 0, 2); 
         public override Version RequiredExiledVersion => new Version(9, 6, 0);
 
         public static MagneticCage173 Instance { get; private set; }
