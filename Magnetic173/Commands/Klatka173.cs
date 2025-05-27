@@ -34,7 +34,7 @@ namespace MagneticCage173.Commands
                 response = "The magnetic cage function is currently disabled.";
                 return false;
             }
-
+//test commitów bo coś sie rozjebało
             if (!Magnetic173.MagneticCage173.Instance.Config.AllowedRoles.Contains(player.Role.Type))
             {
                 response = "Your role does not permit the use of this command.";
