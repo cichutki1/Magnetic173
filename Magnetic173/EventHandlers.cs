@@ -316,7 +316,7 @@ namespace Magnetic173
                     spawnRotation.eulerAngles 
                 );
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage (schematic error).</color></b>", 10);
                 yield break;
