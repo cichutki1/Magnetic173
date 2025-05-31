@@ -12,38 +12,38 @@ namespace MagneticCage173.Commands
     {
         public string Command => Magnetic173.MagneticCage173.Instance.Config.CageCommand;
         public string[] Aliases => null;
-        public string Description => "Initiating the magnetic cage creation procedure on SCP-173.";
+        public string Description => "Inicjalizuje zakładanie klatki dla SCP-173.";
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!(sender is PlayerCommandSender playerSender))
             {
-                response = "This command can only be used by a player.";
+                response = "Ta komenda może zostać użyta tylko przez gracza.";
                 return false;
             }
 
             Player player = Player.Get(playerSender.ReferenceHub);
             if (player == null) 
             {
-                response = "Player could not be identified.";
+                response = "Nie można zidentyfikować gracza.";
                 return false;
             }
 
             if (!Magnetic173.MagneticCage173.Instance.Config.IsEnabled)
             {
-                response = "The magnetic cage function is currently disabled.";
+                response = "Funkcjonalność klatki magnetycznej jest obecnie wyłączona.";
                 return false;
             }
 
             if (!Magnetic173.MagneticCage173.Instance.Config.AllowedRoles.Contains(player.Role.Type))
             {
-                response = "Your role does not permit the use of this command.";
+                response = "Nie możesz założyć klatki magnetycznej jako obecna klasa!";
                 return false;
             }
 
             if (Magnetic173.MagneticCage173.Instance.ActiveCountdowns.ContainsKey(player) || Magnetic173.MagneticCage173.Instance.IsPlayerCurrentlyCaging(player)) 
             {
-                response = "You are already in the process of creating a cage or have an active cage.";
+                response = "Zakładasz klatkę magnetyczną lub już ją założyłeś.";
                 return false;
             }
 
@@ -55,23 +55,23 @@ namespace MagneticCage173.Commands
                 {
                     if (Magnetic173.MagneticCage173.Instance.ActiveCages.ContainsKey(target))
                     {
-                        response = "This SCP-173 is already in a cage.";
+                        response = "SCP-173 jest już w klatce.";
                         return false;
                     }
 
                     Magnetic173.MagneticCage173.Instance.InitiateCagingProcess(player, target); 
-                    response = "Initiating magnetic cage creation procedure...";
+                    response = "Inicjalizacja procedury klatki magnetycznej...";
                     return true;
                 }
                 else
                 {
-                    response = $"You must look directly at SCP-173 from a close distance.";
+                    response = $"Musisz patrzeć się na górną część SCP-173 z bardzo bliskiego dystansu.";
                     return false;
                 }
             }
             else 
             {
-                response = $"You must look directly at SCP-173 from a close distance.";
+                response = $"Musisz patrzeć się na górną część SCP-173 z bardzo bliskiego dystansu.";
                 return false;
             }
         }

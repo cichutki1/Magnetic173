@@ -49,7 +49,7 @@ namespace Magnetic173
             {
                 Timing.KillCoroutines(countdownCoroutine);
                 _plugin.ActiveCountdowns.Remove(ev.Player);
-                ev.Player.ShowHint("<color=grey><b>Cage creation procedure canceled – you died.</color></b>", 5);
+                ev.Player.ShowHint("<color=grey><b>Procedura zakładania klatki anulowana – umarłeś.</color></b>", 5);
             }
 
 
@@ -75,7 +75,7 @@ namespace Magnetic173
             {
                 Timing.KillCoroutines(countdownCoroutine);
                 _plugin.ActiveCountdowns.Remove(ev.Player);
-                ev.Player.ShowHint("<color=grey><b>Cage creation procedure canceled - change role.</color></b>", 5);
+                ev.Player.ShowHint("<color=grey><b>Procedura zakładania klatki anulowana - zmieniłeś klasę.</color></b>", 5);
             }
 
             if (TryGetCageByCagingPlayer(ev.Player, out var cageInfo) && !_plugin.Config.AllowedRoles.Contains(ev.NewRole))
@@ -101,7 +101,7 @@ namespace Magnetic173
                 && _plugin.ActiveCages.ContainsKey(ev.Attacker))
             {
                 ev.IsAllowed = false;
-                ev.Attacker.ShowHint("<color=red><b>You can’t attack while in a magnetic cage!</color></b>", 2);
+                ev.Attacker.ShowHint("<color=red><b>Nie możesz atakować będąc w klatce!</color></b>", 2);
             }
         }
         
@@ -152,8 +152,8 @@ namespace Magnetic173
 
                             if (cageInfo.CurrentHealth <= 0)
                             {
-                                cageInfo.CagedScp173?.ShowHint("<color=grey><b>Your cage has been destroyed!</color></b>", 5);
-                                cageInfo.CagingPlayer?.ShowHint("<color=grey><b>Your cage has been destroyed!</color></b>", 5);
+                                cageInfo.CagedScp173?.ShowHint("<color=grey><b>Twoja klatka została zniszczona!</color></b>", 5);
+                                cageInfo.CagingPlayer?.ShowHint("<color=grey><b>Klatka magnetyczna została zniszczona!</color></b>", 5);
                                 CleanupCage(cageInfo.CagedScp173);
                                 break;
                             }
@@ -190,8 +190,8 @@ namespace Magnetic173
 
                     if (distanceToCage <= destructionRadius)
                     {
-                        cageInfo.CagedScp173?.ShowHint("<color=grey><b>Your cage has been destroyed!</color></b>", 5);
-                        cageInfo.CagingPlayer?.ShowHint("<color=grey><b>Your cage has been destroyed!</color></b>", 5);
+                        cageInfo.CagedScp173?.ShowHint("<color=grey><b>Twoja klatka została zniszczona!</color></b>", 5);
+                        cageInfo.CagingPlayer?.ShowHint("<color=grey><b>Klatka magnetyczna została zniszczona!</color></b>", 5);
                         
                         CleanupCage(cageInfo.CagedScp173);
                     }
@@ -234,17 +234,17 @@ namespace Magnetic173
         {
             if (_plugin.ActiveCages.ContainsKey(targetScp173))
             {
-                cagingPlayer.ShowHint("<color=grey><b>This SCP-173 is already in the cage.</color></b>", 5);
+                cagingPlayer.ShowHint("<color=grey><b>SCP-173 jest już w klatce!.</color></b>", 5);
                 return;
             }
             if (IsAnyPlayerCaging(cagingPlayer))
             {
-                cagingPlayer.ShowHint("<color=grey><b>You are already creating or have an active cage.</color></b>", 5);
+                cagingPlayer.ShowHint("<color=grey><b>Zakładasz lub założyłeś już klatkę magnetyczną.</color></b>", 5);
                 return;
             }
             if (_plugin.ActiveCountdowns.ContainsKey(cagingPlayer))
             {
-                cagingPlayer.ShowHint("<color=grey><b>You have already initiated the cage creation procedure.</color></b>", 5);
+                cagingPlayer.ShowHint("<color=grey><b>Juz zainicjowałeś zakładanie klatki.</color></b>", 5);
                 return;
             }
 
@@ -271,20 +271,20 @@ namespace Magnetic173
 
                 if (Vector3.Distance(cagingPlayer.Position, startPosition) > 1.0f)
                 {
-                    cagingPlayer.ShowHint($"<color=grey><b>Cage creating procedure canceled</color></b>\n<color=white><b>You have moved too far away...</color></b>", 5);
+                    cagingPlayer.ShowHint($"<color=grey><b>Procedura tworzenia klatki anulowana</color></b>\n<color=white><b>Odeszłeś zbyt zbyt daleko...</color></b>", 5);
                     _plugin.ActiveCountdowns.Remove(cagingPlayer);
                     yield break;
                 }
 
 
-                cagingPlayer.ShowHint($"<b><color=grey>Deploying magnetic cage…</color></b>\n<color=white><b>Remaining:</b></color> <color=grey>{Mathf.CeilToInt(remainingTime)}</color>\n<color=grey><b>Don’t move away!</color></color>", 1.1f); // Dodano info o nieoddalaniu się
+                cagingPlayer.ShowHint(_plugin.Translation.CageInProgress.Replace("{time}",$"{Mathf.CeilToInt(remainingTime)}"), 1.1f); // Dodano info o nieoddalaniu się
                 yield return Timing.WaitForSeconds(1f);
                 remainingTime -= 1f;
             }
 
             if (cagingPlayer == null || !cagingPlayer.IsConnected || targetScp173 == null || !targetScp173.IsConnected || targetScp173.Role.Type != RoleTypeId.Scp173 || !_plugin.Config.AllowedRoles.Contains(cagingPlayer.Role.Type))
             {
-                cagingPlayer?.ShowHint("<color=grey><b>Failed to create the cage.</color></b>", 5);
+                cagingPlayer?.ShowHint("<color=grey><b>Nie udało się założyć klatki.</color></b>", 5);
                 if (cagingPlayer != null) _plugin.ActiveCountdowns.Remove(cagingPlayer);
                 yield break;
             }
@@ -306,18 +306,18 @@ namespace Magnetic173
             }
             catch (Exception)
             {
-                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage.</color></b>", 10);
+                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Nie udało się stworzyć klatki.</color></b>", 10);
                 yield break;
             }
 
             if (cageInstance == null)
             {
-                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Failed to create the cage.</color></b>", 10);
+                cagingPlayer.ShowHint("<color=red><b>Error:</color></b> <color=grey><b>Nie udało się stworzyć klatki.</color></b>", 10);
                 yield break;
             }
 
-            cagingPlayer.ShowHint("<color=white><b>Magnetic cage active!</color></b>", 5);
-            targetScp173.ShowHint("<color=grey><b>You have been caught in a magnetic cage!</color></b>", 5);
+            cagingPlayer.ShowHint("<color=white><b>Klatka magnetyczna aktywna!</color></b>", 5);
+            targetScp173.ShowHint("<color=grey><b>Zostałeś wsadzony do klatki magnetycznej!</color></b>", 5);
 
             CoroutineHandle updateCoroutine = Timing.RunCoroutine(UpdateCageCoroutine(cagingPlayer, targetScp173, cageInstance));
 
@@ -384,7 +384,7 @@ namespace Magnetic173
                     }
                 }
                 _plugin.ActiveCages.Remove(cagedScp173);
-                cagedScp173?.ShowHint("<color=grey><b>You have been released from the cage.</color></b>", 3);
+                cagedScp173?.ShowHint("<color=grey><b>Zostałeś wypuszczony z klatki.</color></b>", 3);
             }
         }
 
