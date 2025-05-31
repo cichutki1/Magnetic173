@@ -4,6 +4,12 @@
 
 ---
 
+## 🔔 Discord
+
+* **Join the official Discord:** https://discord.gg/cEtct4eNrJ
+
+---
+
 ## 🎮 How It Works
 
 1. **Look** at SCP-173.
@@ -33,4 +39,4 @@
 ## 👨‍💻 Authors
 
 * **Feniks Studio**
-* **Tymek** – lead developer
+* **Tymek** – Lead Developer

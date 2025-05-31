@@ -1,16 +1,16 @@
-﻿using CommandSystem;
+﻿using System;
+using CommandSystem;
 using Exiled.API.Features;
-using System;
-using UnityEngine;
 using PlayerRoles;
 using RemoteAdmin;
+using UnityEngine;
 
-namespace MagneticCage173.Commands
+namespace Magnetic173.Commands
 {
     [CommandHandler(typeof(ClientCommandHandler))]
     public class Klatka173 : ICommand
     {
-        public string Command => Magnetic173.MagneticCage173.Instance.Config.CageCommand;
+        public string Command => MagneticCage173.Instance.Config.CageCommand;
         public string[] Aliases => null;
         public string Description => "Inicjalizuje zakładanie klatki dla SCP-173.";
 
@@ -29,19 +29,19 @@ namespace MagneticCage173.Commands
                 return false;
             }
 
-            if (!Magnetic173.MagneticCage173.Instance.Config.IsEnabled)
+            if (!MagneticCage173.Instance.Config.IsEnabled)
             {
                 response = "Funkcjonalność klatki magnetycznej jest obecnie wyłączona.";
                 return false;
             }
 
-            if (!Magnetic173.MagneticCage173.Instance.Config.AllowedRoles.Contains(player.Role.Type))
+            if (!MagneticCage173.Instance.Config.AllowedRoles.Contains(player.Role.Type))
             {
                 response = "Nie możesz założyć klatki magnetycznej jako obecna klasa!";
                 return false;
             }
 
-            if (Magnetic173.MagneticCage173.Instance.ActiveCountdowns.ContainsKey(player) || Magnetic173.MagneticCage173.Instance.IsPlayerCurrentlyCaging(player)) 
+            if (MagneticCage173.Instance.ActiveCountdowns.ContainsKey(player) || Magnetic173.MagneticCage173.Instance.IsPlayerCurrentlyCaging(player)) 
             {
                 response = "Zakładasz klatkę magnetyczną lub już ją założyłeś.";
                 return false;
