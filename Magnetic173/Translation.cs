@@ -41,7 +41,7 @@ namespace Magnetic173
             "<color=grey><b>Cage creation procedure canceled - change role.</color></b>";
 
         [Description("Hint when SCP-173 tries to attack while in a cage")]
-        public string Shooting { get; set; } = "<color=red><b>You can’t attack while in a magnetic cage!</color></b>";
+        public string CantAttackInCage { get; set; } = "<color=red><b>You can’t attack while in a magnetic cage!</color></b>";
 
         [Description("Hint for SCp-173 when his cage has been destroyed")]
         public string CageDestroyed173 { get; set; } = "<color=grey><b>Your cage has been destroyed!</color></b>";
