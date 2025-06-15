@@ -71,7 +71,7 @@
       <HintPath>..\packages\ExMod.Exiled.9.6.0\lib\net48\NorthwoodLib.dll</HintPath>
     </Reference>
     <Reference Include="ProjectMER">
-      <HintPath>..\..\..\Downloads\ProjectMER (1).dll</HintPath>
+      <HintPath>..\..\..\Downloads\ProjectMER (3).dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
