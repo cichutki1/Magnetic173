@@ -49,17 +49,6 @@ namespace Magnetic173
         [Description("Hint for caging player when cage is destroyed")]
         public string CageDestroyedCaging { get; set; } = "<color=grey><b>Your cage has been destroyed!</color></b>";
 
-        [Description("Hint for caging player when cage is created")]
-        public string CageCreated { get; set; } = "<color=green><b>Magnetic cage created successfully!</color></b>";
-
-        [Description("Hint for player when SCP-173 is already in the cage")]
-        public string StartCageProcess { get; set; } =
-            "<color=grey><b>This SCP-173 is already in the cage.</color></b>";
-
-        [Description("Hint for player when somebody is already creating cage or cage is active")]
-        public string CageIsInProgress { get; set; } =
-            "<color=grey><b>Somebody is already creating cage or cage is already active.</color></b>";
-
         [Description("Hint for player when cage is alredy being created")]
         public string CageIsInProgress173 { get; set; } =
             "<color=grey><b>You have already initiated the cage creation procedure.</color></b>";
@@ -70,10 +59,6 @@ namespace Magnetic173
         [Description("Hint for player when moved too far away during cage creation")]
         public string MovedTooAway { get; set; } =
             "<color=grey><b>Cage creation procedure canceled</color></b>\\n<color=white><b>You moved too far away...</color></b>";
-
-        [Description("Hint for player when player looked away during cage creation")]
-        public string LookedAway { get; set; } =
-            "<color=grey><b>Cage creation procedure canceled</color></b>\\n<color=white><b>You looked away...</color></b>";
 
         [Description("Hint for player when cage started creating")]
         public string CageInProgress { get; set; } =
