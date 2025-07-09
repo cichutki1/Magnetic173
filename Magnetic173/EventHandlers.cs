@@ -277,7 +277,7 @@ namespace Magnetic173
                 }
 
 
-                cagingPlayer.ShowHint(_plugin.Translation.CageInProgress.Replace("{time}",$"{Mathf.CeilToInt(remainingTime)}"), 1.1f); // Dodano info o nieoddalaniu się
+                cagingPlayer.ShowHint($"<b><color=grey>Zakładanie klatki magnetycznej…</color></b>\\n<color=white><b>Pozostało:</b></color> <color=grey>{Mathf.CeilToInt(remainingTime)}</color>\\n<color=grey><b>Nie ruszaj się i nie rozglądaj!</color></b>", 1.1f); // Dodano info o nieoddalaniu się
                 yield return Timing.WaitForSeconds(1f);
                 remainingTime -= 1f;
             }
