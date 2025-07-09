@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Exiled.API.Features;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using MEC;
@@ -378,8 +379,9 @@ namespace Magnetic173
                     {
                         UnityEngine.Object.Destroy(cageInfo.CageSchematic.transform.gameObject);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Log.Error($"Failed to destroy cage schematic: {ex.Message}");
                         // Noi co? Znaleźliście coś ciekawego?
                         // Tak, znalazłem
                     }
